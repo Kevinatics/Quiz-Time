@@ -9,12 +9,35 @@ const saveScoreBtn = document.getElementById('saveScoreBtn');
 
 let questions = [
     {
-        question: "What's the capital of France?",
-        answers: ['Berlin', 'Paris', 'Madrid', 'Rome'],
-        correctAnswer: 1
+        question: "What does HTML stand for?",
+        answers: ['Hyper Text Markup Language','Hyperlink and Text Markup Language','High Tech Modern Language','Hyper Transfer Markup Language', ],
+        correctAnswer: 0
     },
-    // ... more questions
+    {
+        question: "Which programming language is often used for front-end web development?",
+        answers: ['Java', 'Python', 'JavaScript', 'Ruby'],
+        correctAnswer: 2
+        
+    },
+    {
+        question: "What does CSS stand for?",
+        answers: ['Cascading Style Sheet', 'Computer Style Sheet', 'Creative Style Sheet', 'Colorful Style Sheet'],
+        correctAnswer: 0
+        
+    },
+    {
+        question: "In JavaScript, which keyword is used to declare a variable?",
+        answers: ['variable', 'let', 'const', 'var'],
+        correctAnswer: 3
+    },
+    {
+        question: "Which JavaScript method is used to store data in the client's local storage?",
+        answers: ['setLocalData()', 'storeDataLocally()', 'setItem()', 'saveToLocalStorage()'],
+        correctAnswer: 2
+        },
+    // Add more coding-related questions and answers here...
 ];
+
 
 let currentQuestionIndex = 0;
 let timeLeft = 100;
@@ -39,29 +62,30 @@ function updateTimer() {
 }
 
 function displayQuestion() {
-    const currentQuestion = questions[currentQuestionIndex];
-    questionEl.textContent = currentQuestion.question;
-    answersEl.innerHTML = '';
-    currentQuestion.answers.forEach((answer, index) => {
-        const btn = document.createElement('button');
-        btn.textContent = answer;
-        btn.addEventListener('click', () => checkAnswer(index));
-        answersEl.appendChild(btn);
-    });
+    if (currentQuestionIndex < questions.length) {
+        const currentQuestion = questions[currentQuestionIndex];
+        questionEl.textContent = currentQuestion.question;
+        answersEl.innerHTML = '';
+        currentQuestion.answers.forEach((answer, index) => {
+            const btn = document.createElement('button');
+            btn.textContent = answer;
+            btn.addEventListener('click', () => checkAnswer(index));
+            answersEl.appendChild(btn);
+        });
+    } else {
+        // User has completed all questions
+        endGame();
+    }
 }
 
 function checkAnswer(answerIndex) {
     if (answerIndex !== questions[currentQuestionIndex].correctAnswer) {
         timeLeft -= 10;  // penalize for wrong answer
     }
-    
+
     currentQuestionIndex++;
 
-    if (currentQuestionIndex < questions.length) {
-        displayQuestion();
-    } else {
-        endGame();
-    }
+    displayQuestion(); // Move to the next question or end the game
 }
 
 function endGame() {
@@ -75,10 +99,7 @@ saveScoreBtn.addEventListener('click', saveScore);
 function saveScore() {
     const initials = initialsEl.value;
     const score = timeLeft;
-    // save initials and score to local storage or server here
+    localStorage.setItem('initials', initials);
+    localStorage.setItem('score', score);
+    // Save initials and score to local storage 
 }
-
-
-
-
-
