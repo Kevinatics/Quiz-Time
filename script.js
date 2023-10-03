@@ -35,7 +35,7 @@ let questions = [
         answers: ['setLocalData()', 'storeDataLocally()', 'setItem()', 'saveToLocalStorage()'],
         correctAnswer: 2
         },
-    // Add more coding-related questions and answers here...
+    // Added more questions here...
 ];
 
 
@@ -103,3 +103,42 @@ function saveScore() {
     localStorage.setItem('score', score);
     // Save initials and score to local storage 
 }
+//highscore code
+
+let highScore = localStorage.getItem('highScore') || 0; // Load the high score from local storage or set to 0 if not available
+
+
+
+function endGame() {
+    clearInterval(timer);
+    questionContainer.style.display = 'none';
+    gameOverEl.style.display = 'block';
+
+    // Display the high score
+    document.getElementById('highScore').textContent = highScore;
+}
+
+// Restart the quiz
+document.getElementById('restartBtn').addEventListener('click', () => {
+    currentQuestionIndex = 0;
+    timeLeft = 100;
+    clearInterval(timer);
+    timerEl.textContent = timeLeft;
+    startGame();
+});
+
+// Save the high score
+function saveScore() {
+    const initials = initialsEl.value;
+    const score = timeLeft;
+    
+    // Check if the current score is higher than the existing high score
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('highScore', highScore);
+    }
+    
+    localStorage.setItem('initials', initials);
+    localStorage.setItem('score', score);
+}
+
